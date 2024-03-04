@@ -10,6 +10,8 @@ class Photo(models.Model):
     
     def get_real_estate(self):
         return RealEstate.objects.filter(photos=self).first()
+    class Meta:
+        app_label = 'app'
 
 class RealEstate(models.Model):
     title = models.CharField(max_length=255)
@@ -35,6 +37,7 @@ class RealEstate(models.Model):
 
     class Meta:
         ordering = ["-update_date"]
+        app_label = 'app'
 
     def __str__(self):
         return self.title + " " + self.owner.username
@@ -59,6 +62,8 @@ class LeaseContract(models.Model):
 
     def __str__(self):
         return self.property.title + " " + self.tenant.username
+    class Meta:
+        app_label = 'app'
 
 class Notifications(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -69,6 +74,8 @@ class Notifications(models.Model):
             return self.user.username + " " + "new application"
         elif self.type == 2:
             return self.user.username + " " + "application confirmed"
+    class Meta:
+        app_label = 'app'
 
 class Mailling(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -76,6 +83,8 @@ class Mailling(models.Model):
 
     def __str__(self):
         return self.user.username
+    class Meta:
+        app_label = 'app'
 
 class Favorites(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -83,14 +92,20 @@ class Favorites(models.Model):
 
     def __str__(self):
         return self.user.username + " " + self.property.title
+    class Meta:
+        app_label = 'app'
 
 class Reviews(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     property = models.ForeignKey(RealEstate, on_delete=models.CASCADE, related_name="reviews")
     comment = models.TextField(null=True)
     rate = models.IntegerField()
+    class Meta:
+        app_label = 'app'
 
 class Contact(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField()
     content = models.CharField(max_length=1000)
+    class Meta:
+        app_label = 'app'
